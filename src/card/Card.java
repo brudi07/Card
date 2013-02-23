@@ -1,5 +1,6 @@
 package card;
 
+
 /** Card
  *
  * @author Ben Rudi
@@ -14,10 +15,10 @@ public final class Card {
     private int runeCost;
     private int battleCost;
     private int honorWorth;
-    private CardType cardType;
-    private Ability ability;
+    private Type type;
+    private Ability[] abilities;
 
-    public enum CardType {
+    public enum Type {
         HERO,
         MONSTER,
         CONSTRUCT
@@ -27,19 +28,19 @@ public final class Card {
      * Card constructor
      *
      */
-    public Card(String name, CardType cardType, 
+    public Card(String name, Type type, 
             int rune, int battle, int honor, 
             int runeCost, int battleCost, int honorWorth,
-            Ability ability) {
+            Ability... abilities) {
         setName(name);
-        setCardType(cardType);
+        setType(type);
         setRune(rune);
         setBattle(battle);
         setHonor(honor);
         setRuneCost(runeCost);
         setBattleCost(battleCost);
         setHonorWorth(honorWorth);
-        setAbility(ability);
+        setAbilities(abilities);
     }
     
     /**
@@ -188,8 +189,8 @@ public final class Card {
      * @param none
      * @return Card type (Hero, Construct, Monster)
      */
-    public CardType getCardType() {
-        return cardType;
+    public Type getCardType() {
+        return type;
     }
 
     /**
@@ -198,8 +199,8 @@ public final class Card {
      * @param Card type (Hero, Construct, Monster)
      * @return void
      */
-    public void setCardType(CardType cardType) {
-        this.cardType = cardType;
+    public void setType(Type type) {
+        this.type = type;
     }
 
     /**
@@ -208,8 +209,8 @@ public final class Card {
      * @param none
      * @return Ability
      */
-    public Ability getAbility() {
-        return ability;
+    public Ability[] getAbilities() {
+        return abilities;
     }
 
     /**
@@ -218,8 +219,11 @@ public final class Card {
      * @param Ability
      * @return void
      */
-    public void setAbility(Ability ability) {
-        this.ability = ability;
+    public void setAbilities(Ability... abilities) {
+    	if (abilities == null){
+    		abilities = new Ability[0]; 
+    	}
+        this.abilities = abilities;
     }
 
     /**
@@ -230,14 +234,14 @@ public final class Card {
      */
     @Override
     public String toString() {
-        return name + "\n" + cardType + "\n" + 
+        return name + "\n" + type + "\n" + 
                 "Rune Cost: " + runeCost + "\n" +
                 "Battle Cost: " + battleCost + "\n" +
                 "Rune: " + rune + "\n" +
                 "Battle: " + battle + "\n" +
                 "Honor: " + honor + "\n" +
                 "Honor Worth: " + honorWorth + "\n" +
-                "Ability: " + ability;
+                "Abilities: " + abilities;
     }
 
 }

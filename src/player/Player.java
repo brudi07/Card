@@ -1,6 +1,9 @@
 package player;
 
+import java.lang.reflect.InvocationTargetException;
+
 import board.Board;
+import card.Ability;
 import card.Card;
 import deck.Deck;
 
@@ -11,6 +14,7 @@ import deck.Deck;
  */
 public class Player {
 
+	private String name;
     private Deck playerDeck = new Deck();
     private Deck playerDiscard = new Deck();
     private Deck hand = new Deck();
@@ -18,7 +22,15 @@ public class Player {
     private int runeTotal;
     private int battleTotal;
 
-    /**
+    public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
      * Get the player's deck
      *
      * @param none
@@ -97,6 +109,9 @@ public class Player {
     public void setHonorTotal(int honorTotal) {
         this.honorTotal = honorTotal;
     }
+    public int addHonor(int honor){
+    	return honorTotal+=honor;
+    }
 
     /**
      * Get the player's rune total
@@ -117,6 +132,10 @@ public class Player {
     public void setRuneTotal(int runeTotal) {
         this.runeTotal = runeTotal;
     }
+    
+    public int addRune(int runes){
+    	return runeTotal+= runes;
+    }
 
     /**
      * Get the player's battle total
@@ -126,6 +145,9 @@ public class Player {
      */
     public int getBattleTotal() {
         return battleTotal;
+    }
+    public int addBattle(int battle){
+    	return battleTotal += battle;
     }
 
     /**
@@ -204,22 +226,44 @@ public class Player {
      * @return void
      */
     public void play(Player player, Card card) {
-        System.out.println("You played " + card.getName() + ".");
-        // Add the values from the card to the player's total
-        int rune = player.getRuneTotal() + card.getRune();
-        int battle = player.getBattleTotal() + card.getBattle();
-        player.setRuneTotal(rune);
-        player.setBattleTotal(battle);
+        System.out.println(player.getName() + " played " + card.getName() + ".");
+        
         // Remove the card from the player's hand
         player.getHand().remove(card);
-        // Check the ability list and use the ability if it has one
-        card.getAbility().abilityCheck(player, card);
+
+        // Add the values from the card to the player's total
+        player.addRune(card.getRune());
+        player.addBattle(card.getBattle());
+        
+        // Check the ability list and perform each ability
+        for (Ability ability : card.getAbilities()){
+        	try {
+				ability.perform(player);
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+        
         // Add the card to the discard pile
         player.getPlayerDiscard().add(card);
         
         System.out.println("Rune: " + player.getRuneTotal());
         System.out.println("Battle: " + player.getBattleTotal());
     }
+    
     
     /**
      * Buy a card from the board

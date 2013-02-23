@@ -1,12 +1,14 @@
 package main;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import player.Player;
 import board.Board;
 import card.Ability;
 import card.Card;
-import card.Card.CardType;
+import card.Card.Type;
 import deck.Deck;
 
 /**
@@ -22,8 +24,8 @@ public class Main {
         
         Board board = new Board();
         Player playerOne = new Player();
-        Ability none = new Ability("None", "");
-        Ability drawOne = new Ability("DrawOne", "Draw one card.");
+        
+        
 
         Deck playerDeck = playerOne.getPlayerDeck();
         Deck playerHand = playerOne.getHand(); 
@@ -31,31 +33,32 @@ public class Main {
         Deck centerDeck = board.getCenterDeck();
         Deck voidDeck = board.getCenterVoid();
         Deck centerRow = board.getCenterRow();
+        
 
-        Card apprentice = new Card("Apprentice", CardType.HERO,
+        Card apprentice = new Card("Apprentice", Type.HERO,
                 1, 0, 0,
                 0, 0, 0,
-                none);
+                null);
 
-        Card militia = new Card("Militia", CardType.HERO,
+        Card militia = new Card("Militia", Type.HERO,
                 0, 1, 0,
                 0, 0, 0,
-                none);
+                null);
 
-        Card mystic = new Card("Mystic", CardType.HERO,
+        Card mystic = new Card("Mystic", Type.HERO,
                 3, 0, 0,
                 3, 0, 1,
-                none);
+                null);
         
-        Card heavy = new Card("Heavy", CardType.HERO,
+        Card heavy = new Card("Heavy", Type.HERO,
                 0, 2, 0,
                 2, 0, 1,
-                none);
+                null);
         
-        Card initiate = new Card("Initiate", CardType.HERO,
+        Card initiate = new Card("Initiate", Type.HERO,
                 0, 0, 0,
                 1, 0, 1,
-                drawOne);
+                Ability.DRAW_ONE);
 
         for (int i = 0; i < 8; i++) {
             playerOne.getPlayerDeck().add(apprentice);
