@@ -108,7 +108,7 @@ public class Main {
                         }
                         String card = scanner.nextLine();
                         int choice = Integer.parseInt(card) - 1;
-                        playerOne.buy(centerRow.getCard(choice), playerOne, board);
+                        playerOne.buy(playerOne, centerRow.getCard(choice), board);
                     } else if (playerOption.equals("3")) {
                         System.out.println("End of turn.");
                         playerOne.endOfTurn();

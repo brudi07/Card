@@ -1,8 +1,9 @@
 package card;
 
-/**
+/** Card
  *
  * @author Ben Rudi
+ * @version 0.1 02/23/13
  */
 public final class Card {
     
@@ -22,23 +23,10 @@ public final class Card {
         CONSTRUCT
     }
     
-    public Card() {
-        
-    }
-    
-    public Card(String name, CardType cardType, 
-            int rune, int battle, int honor, 
-            int runeCost, int battleCost, int honorWorth) {
-        setName(name);
-        setCardType(cardType);
-        setRune(rune);
-        setBattle(battle);
-        setHonor(honor);
-        setRuneCost(runeCost);
-        setBattleCost(battleCost);
-        setHonorWorth(honorWorth);
-    }
-    
+    /**
+     * Card constructor
+     *
+     */
     public Card(String name, CardType cardType, 
             int rune, int battle, int honor, 
             int runeCost, int battleCost, int honorWorth,
@@ -54,78 +42,192 @@ public final class Card {
         setAbility(ability);
     }
     
+    /**
+     * Get the card name
+     *
+     * @param none
+     * @return Name of the card
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Set the name of the card
+     *
+     * @param Card name
+     * @return void
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Get the rune worth
+     *
+     * @param none
+     * @return Rune worth
+     */
     public int getRune() {
         return rune;
     }
 
+    /**
+     * Set the rune worth
+     *
+     * @param Rune worth
+     * @return void
+     */
     public void setRune(int rune) {
         this.rune = rune;
     }
 
+    /**
+     * Get the battle worth
+     *
+     * @param none
+     * @return Battle worth
+     */
     public int getBattle() {
         return battle;
     }
 
+    /**
+     * Set the battle worth
+     *
+     * @param Battle worth
+     * @return void
+     */
     public void setBattle(int battle) {
         this.battle = battle;
     }
 
+    /**
+     * Get the honor worth
+     *
+     * @param none
+     * @return Honor worth
+     */
     public int getHonor() {
         return honor;
     }
 
+    /**
+     * Set the honor worth
+     *
+     * @param Honor worth
+     * @return void
+     */
     public void setHonor(int honor) {
         this.honor = honor;
     }
 
+    /**
+     * Get the rune cost
+     *
+     * @param none
+     * @return Rune cost
+     */
     public int getRuneCost() {
         return runeCost;
     }
 
+    /**
+     * Set the rune cost
+     *
+     * @param Rune cost
+     * @return void
+     */
     public void setRuneCost(int runeCost) {
         this.runeCost = runeCost;
     }
 
+    /**
+     * Get the battle cost
+     *
+     * @param none
+     * @return Battle cost
+     */
     public int getBattleCost() {
         return battleCost;
     }
 
+    /**
+     * Set the battle cost
+     *
+     * @param Battle cost
+     * @return void
+     */
     public void setBattleCost(int battleCost) {
         this.battleCost = battleCost;
     }
 
+    /**
+     * Get the honor worth
+     *
+     * @param none
+     * @return Honor worth
+     */
     public int getHonorWorth() {
         return honorWorth;
     }
 
+    /**
+     * Set the honor worth
+     *
+     * @param Honor worth
+     * @return void
+     */
     public void setHonorWorth(int honorWorth) {
         this.honorWorth = honorWorth;
     }
 
+    /**
+     * Get the card type
+     *
+     * @param none
+     * @return Card type (Hero, Construct, Monster)
+     */
     public CardType getCardType() {
         return cardType;
     }
 
+    /**
+     * Set the card type
+     *
+     * @param Card type (Hero, Construct, Monster)
+     * @return void
+     */
     public void setCardType(CardType cardType) {
         this.cardType = cardType;
     }
 
+    /**
+     * Get ability
+     *
+     * @param none
+     * @return Ability
+     */
     public Ability getAbility() {
         return ability;
     }
 
+    /**
+     * Set ability
+     *
+     * @param Ability
+     * @return void
+     */
     public void setAbility(Ability ability) {
         this.ability = ability;
     }
 
+    /**
+     * Card to String
+     *
+     * @param none
+     * @return String of all the card elements
+     */
     @Override
     public String toString() {
         return name + "\n" + cardType + "\n" + 
