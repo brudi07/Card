@@ -3,7 +3,7 @@ package card;
 
 /** Card
  *
- * @author Ben Rudi
+ * @author Ben Rudi, Matt Bates
  * @version 0.1 02/23/13
  */
 public final class Card {

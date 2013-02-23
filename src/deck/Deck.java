@@ -1,8 +1,10 @@
 package deck;
 
-import card.Card;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+
+import card.Card;
 
 /** Deck
  *
@@ -11,7 +13,7 @@ import java.util.Collections;
  */
 public class Deck {
 
-    private ArrayList<Card> deck = new ArrayList();
+    private List<Card> deck = new ArrayList<Card>();
 
     /**
      * Return the deck
@@ -19,7 +21,7 @@ public class Deck {
      * @param none
      * @return Deck
      */
-    public ArrayList getDeck() {
+    public List<Card> getDeck() {
         return deck;
     }
 
@@ -39,8 +41,8 @@ public class Deck {
      * @param Card
      * @return void
      */
-    public void add(Card card) {
-        this.deck.add(card);
+    public boolean add(Card card) {
+       return  this.deck.add(card);
     }
 
     /**
@@ -49,8 +51,8 @@ public class Deck {
      * @param Card
      * @return void
      */
-    public void remove(Card card) {
-        this.deck.remove(card);
+    public boolean remove(Card card) {
+       return this.deck.remove(card);
     }
 
     /**
@@ -59,8 +61,8 @@ public class Deck {
      * @param Index of the card
      * @return void
      */
-    public void remove(int num) {
-        this.deck.remove(num);
+    public Card remove(int num) {
+        return this.deck.remove(num);
     }
 
     /**
@@ -80,7 +82,11 @@ public class Deck {
      * @return Card on top of the deck
      */
     public Card topCard() {
-        return this.deck.get(0);
+    	return this.deck.get(0);
+    }
+    
+    public Card draw(){
+    	return getDeck().remove(0);
     }
 
     /**

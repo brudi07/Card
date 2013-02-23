@@ -1,5 +1,13 @@
 package board;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import main.Main;
+
+import card.Card;
+
+import player.Player;
 import deck.Deck;
 
 /** Board
@@ -16,6 +24,7 @@ public class Board {
     private Deck mystic = new Deck();
     private Deck heavy = new Deck();
     private Deck cultist = new Deck();
+    private Set<Player> players = new HashSet<Player>();
 
     /**
      * Get honor left to win the game
@@ -26,7 +35,18 @@ public class Board {
     public int getHonorLeft() {
         return honorLeft;
     }
+    
+    public boolean addPlayer(Player player){
+    	return players.add(player);
+    }
 
+    public void draw(int number){
+    	Deck source = getCenterDeck();
+    	Deck backup = getCenterVoid();
+    	Deck destination = getCenterRow();
+    	Main.draw(source, backup, destination, number);
+    }
+    
     /**
      * Set honor left to win the game
      *
@@ -35,6 +55,9 @@ public class Board {
      */
     public void setHonorLeft(int honorLeft) {
         this.honorLeft = honorLeft;
+    }
+    public int removeHonor(int honor) {
+    	return this.honorLeft -= honor;
     }
 
     /**

@@ -17,20 +17,37 @@ import deck.DeckBuilder;
  * @author Ben Rudi, Matt Bates
  */
 public class Main {
+	
+	public static Board board;
 
+	public static void draw(Deck source, Deck backup, Deck destination, int number){
+		for (int i = 0; i < number; i++) {
+
+            if (source.size() == 0) {
+                System.out.println("Shuffling backup into deck.");
+                backup.shuffle();
+                source.addAll(backup);
+                backup.clear();
+            }
+            
+            Card card = source.draw();
+            destination.add(card);
+        }
+	}
+	
     public static void main(String args[]) {
-        
+    	
         DeckBuilder db = new DeckBuilder();
         Boolean playerOneTurn = true;
         Scanner scanner = new Scanner(System.in);
         
-        Board board = new Board();
+        board = new Board();
         Player playerOne = new Player();      
 
-        Deck playerDeck = playerOne.getPlayerDeck();
+        Deck playerDeck = playerOne.getDeck();
         Deck playerHand = playerOne.getHand(); 
-        Deck playerDiscard = playerOne.getPlayerDiscard();
-        Deck centerDeck = db.deckReader("C://Users/Owner/Desktop/Deck.xml");
+        Deck playerDiscard = playerOne.getDiscard();
+        Deck centerDeck = db.deckReader("resources/deck.xml");
         Deck voidDeck = board.getCenterVoid();
         Deck centerRow = board.getCenterRow();
         
@@ -61,10 +78,10 @@ public class Main {
                 Ability.DRAW_ONE);
 
         for (int i = 0; i < 8; i++) {
-            playerOne.getPlayerDeck().add(apprentice);
+            playerOne.getDeck().add(apprentice);
         }
         for (int i = 0; i < 2; i++) {
-            playerOne.getPlayerDeck().add(militia);
+            playerOne.getDeck().add(militia);
         }
         for (int i = 0; i < 5; i++) {
             board.getCenterDeck().add(mystic);
@@ -73,10 +90,12 @@ public class Main {
         }
 
         playerDeck.shuffle();
-        playerOne.draw(playerHand, playerDeck, 5);
+        playerOne.draw(5);
+        
+        
 
         centerDeck.shuffle();
-        playerOne.draw(centerRow, centerDeck, 6);
+        board.draw(6);
 
         while (board.getHonorLeft() > 0) {
             if (playerOneTurn) {
@@ -97,7 +116,7 @@ public class Main {
                             }
                             String cardChoice = scanner.nextLine();
                             int choice = Integer.parseInt(cardChoice) - 1;
-                            playerOne.play(playerOne, playerHand.getCard(choice));
+                            playerOne.play(playerHand.getCard(choice));
                         } else {
                             System.out.println("No cards left in hand.");
                         }

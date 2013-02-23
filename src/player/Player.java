@@ -2,6 +2,8 @@ package player;
 
 import java.lang.reflect.InvocationTargetException;
 
+import main.Main;
+
 import board.Board;
 import card.Ability;
 import card.Card;
@@ -15,9 +17,12 @@ import deck.Deck;
 public class Player {
 
 	private String name;
-    private Deck playerDeck = new Deck();
-    private Deck playerDiscard = new Deck();
+    private Deck deck = new Deck();
+    private Deck discard = new Deck();
     private Deck hand = new Deck();
+    private Deck constructs = new Deck();
+    private Deck played = new Deck();
+    private Deck purchased = new Deck();
     private int honorTotal;
     private int runeTotal;
     private int battleTotal;
@@ -36,8 +41,8 @@ public class Player {
      * @param none
      * @return Player deck
      */
-    public Deck getPlayerDeck() {
-        return playerDeck;
+    public Deck getDeck() {
+        return deck;
     }
 
     /**
@@ -47,7 +52,7 @@ public class Player {
      * @return void
      */
     public void setPlayerDeck(Deck playerDeck) {
-        this.playerDeck = playerDeck;
+        this.deck = playerDeck;
     }
 
     /**
@@ -56,8 +61,8 @@ public class Player {
      * @param none
      * @return Player discard deck
      */
-    public Deck getPlayerDiscard() {
-        return playerDiscard;
+    public Deck getDiscard() {
+        return discard;
     }
 
     /**
@@ -67,7 +72,7 @@ public class Player {
      * @return void
      */
     public void setPlayerDiscard(Deck playerDiscard) {
-        this.playerDiscard = playerDiscard;
+        this.discard = playerDiscard;
     }
 
     /**
@@ -77,7 +82,7 @@ public class Player {
      * @return Player hand
      */
     public Deck getHand() {
-        return hand;
+    	return hand;
     }
 
     /**
@@ -160,46 +165,35 @@ public class Player {
         this.battleTotal = battleTotal;
     }
 
-    /**
-     * Draw card(s) from deck
-     *
-     * @param Deck you are drawing to
-     * @param Deck you are drawing from
-     * @param Number of cards to draw
-     * @return void
-     */
-    public void draw(Deck to, Deck drawDeck, int number) {
-        for (int i = 0; i < number; i++) {
-            
-            // Check if drawing from playerDeck and it has no cards
-            // If so, shuffle the discardDeck and add it to playerDeck
-            if (getPlayerDeck().size() == 0) {
-                System.out.println("Shuffling discard into deck.");
-                getPlayerDiscard().shuffle();
-                getPlayerDeck().addAll(getPlayerDiscard());
-                getPlayerDiscard().clear();
-            }
-            
-            Card topCard = drawDeck.topCard();
-            to.add(topCard);
-            drawDeck.remove(topCard);
-        }
+    public void draw(int number){
+    	Deck source = getDeck();
+    	Deck backup = getDiscard();
+    	Deck destination = getHand();
+    	Main.draw(source, backup, destination, number);
     }
 
     /**
      * Discard card(s) from deck
      *
-     * @param Deck you are discarding from
-     * @param Deck you are discarding to
      * @param Number of cards to discard
      * @return void
      */
-    public void discard(Deck from, Deck discardDeck, int number) {
-        for (int i = 0; i < number; i++) {
-            Card topCard = from.topCard();
-            discardDeck.add(topCard);
-            from.remove(topCard);
+    public void discard(int number) {
+        for (int i = 0; i < number && getHand().size() > i; i++) {
+            Card card = getHand().remove(i);
+            getDiscard().add(card);
         }
+    }
+    public void discard(Deck deck){
+    	for (Card card : deck.getDeck()){
+    		deck.remove(card);
+    		getDiscard().add(card);
+    	}
+    }
+    
+    public void banish(Deck deck, Card card){
+    	deck.remove(card);
+    	Main.board.getCenterVoid().add(card);
     }
 
     /**
@@ -212,10 +206,12 @@ public class Player {
         // Reset all of the players totals accrued this turn
         setRuneTotal(0);
         setBattleTotal(0);
+        
         // Discard any cards remaining in the player's hand
-        discard(getHand(), getPlayerDiscard(), getHand().size());
+        discard( getHand() );
+        
         // Draw five new cards
-        draw(getHand(), getPlayerDeck(), 5);
+        draw(5);
     }
 
     /**
@@ -225,20 +221,20 @@ public class Player {
      * @param Card being played
      * @return void
      */
-    public void play(Player player, Card card) {
-        System.out.println(player.getName() + " played " + card.getName() + ".");
+    public void play( Card card) {
+        System.out.println(getName() + " played " + card.getName() + ".");
         
         // Remove the card from the player's hand
-        player.getHand().remove(card);
+        getHand().remove(card);
 
         // Add the values from the card to the player's total
-        player.addRune(card.getRune());
-        player.addBattle(card.getBattle());
+        addRune(card.getRune());
+        addBattle(card.getBattle());
         
         // Check the ability list and perform each ability
         for (Ability ability : card.getAbilities()){
         	try {
-				ability.perform(player);
+				ability.perform(this);
 			} catch (SecurityException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -258,10 +254,10 @@ public class Player {
         }
         
         // Add the card to the discard pile
-        player.getPlayerDiscard().add(card);
+        getDiscard().add(card);
         
-        System.out.println("Rune: " + player.getRuneTotal());
-        System.out.println("Battle: " + player.getBattleTotal());
+        System.out.println("Rune: " + getRuneTotal());
+        System.out.println("Battle: " + getBattleTotal());
     }
     
     
@@ -277,7 +273,7 @@ public class Player {
         // Check to see if the player can afford the card
         if (card.getRuneCost() <= player.getRuneTotal()) {
             // Add the card to the player's discard
-            player.getPlayerDiscard().add(card);
+            player.getDiscard().add(card);
             // Remove the card from the center row
             board.getCenterRow().remove(card);
             // Replace the card in the center row
