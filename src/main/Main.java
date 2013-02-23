@@ -1,16 +1,17 @@
 package main;
 
+import java.util.Scanner;
+
+import player.Player;
 import board.Board;
 import card.Ability;
 import card.Card;
 import card.Card.CardType;
 import deck.Deck;
-import java.util.Scanner;
-import player.Player;
 
 /**
  *
- * @author Ben Rudi
+ * @author Ben Rudi, Matt Bates
  */
 public class Main {
 
@@ -18,14 +19,14 @@ public class Main {
 
         Boolean playerOneTurn = true;
         Scanner scanner = new Scanner(System.in);
-
+        
         Board board = new Board();
         Player playerOne = new Player();
         Ability none = new Ability("None", "");
         Ability drawOne = new Ability("DrawOne", "Draw one card.");
 
         Deck playerDeck = playerOne.getPlayerDeck();
-        Deck playerHand = playerOne.getHand();
+        Deck playerHand = playerOne.getHand(); 
         Deck playerDiscard = playerOne.getPlayerDiscard();
         Deck centerDeck = board.getCenterDeck();
         Deck voidDeck = board.getCenterVoid();
@@ -108,7 +109,7 @@ public class Main {
                         }
                         String card = scanner.nextLine();
                         int choice = Integer.parseInt(card) - 1;
-                        playerOne.buy(playerOne, centerRow.getCard(choice), board);
+                        playerOne.buy(playerOne,centerRow.getCard(choice), board);
                     } else if (playerOption.equals("3")) {
                         System.out.println("End of turn.");
                         playerOne.endOfTurn();
