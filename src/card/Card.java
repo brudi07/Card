@@ -24,6 +24,10 @@ public final class Card {
         CONSTRUCT
     }
     
+    public Card() {
+        
+    }
+    
     /**
      * Card constructor
      *
