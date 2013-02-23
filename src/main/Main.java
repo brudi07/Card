@@ -10,6 +10,7 @@ import card.Ability;
 import card.Card;
 import card.Card.Type;
 import deck.Deck;
+import deck.DeckBuilder;
 
 /**
  *
@@ -18,19 +19,18 @@ import deck.Deck;
 public class Main {
 
     public static void main(String args[]) {
-
+        
+        DeckBuilder db = new DeckBuilder();
         Boolean playerOneTurn = true;
         Scanner scanner = new Scanner(System.in);
         
         Board board = new Board();
-        Player playerOne = new Player();
-        
-        
+        Player playerOne = new Player();      
 
         Deck playerDeck = playerOne.getPlayerDeck();
         Deck playerHand = playerOne.getHand(); 
         Deck playerDiscard = playerOne.getPlayerDiscard();
-        Deck centerDeck = board.getCenterDeck();
+        Deck centerDeck = db.deckReader("C://Users/Owner/Desktop/Deck.xml");
         Deck voidDeck = board.getCenterVoid();
         Deck centerRow = board.getCenterRow();
         

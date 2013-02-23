@@ -8,14 +8,16 @@ import board.Board;
 
 /** Ability
  *
- * @author Ben Rudi
+ * @author Ben Rudi, Matt Bates
  * @version 0.1 02/23/13
  */
+@SuppressWarnings("unused")
 public enum Ability {
 	
 	DRAW_ONE("transfer one card from player deck to hand"),
-	DISCARD_ONE("transfer one card from hand to discard pile"),
-	GAIN_HONOR("Gain X Honor");
+	DRAW_TWO("transfer two cards from player deck to hand"),
+	BANISH_CENTER("transfer one card from center deck to banish deck"),
+	BANISH_DISCARD("transfer one card from player discard to banish deck");
 	
 	private Ability(String description){
 		this.description = description;
@@ -35,20 +37,26 @@ public enum Ability {
     
     public void perform(Player source) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException{
     	Method method = Ability.class.getMethod(this.toString(),Player.class);
-    	System.out.println(method);
     	method.invoke(this, source);
     }
     
-    public static void main(String[] args) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-    	Player player = new Player();
-    	player.setName("Matt");
-		Ability.DRAW_ONE.perform(player);
-	}
+    private void DRAW_ONE(Player player){
+    	
+    }
     
-    public void DRAW_ONE(Player player){
+    private void DRAW_TWO(Player player){
+    	
+    }
+    
+    private void BANISH_CENTER(Player player){
+    	
+    }
+    
+    private void BANISH_DISCARD(Player player){
     	
     }
 
+    
     /**
      * Draw cards from players deck
      *
