@@ -44,6 +44,15 @@ public class Player {
     public Deck getDeck() {
         return deck;
     }
+    public Deck getConstructs() {
+        return constructs;
+    }
+    public Deck getPlayed() {
+        return played;
+    }
+    public Deck getPurchased() {
+        return purchased;
+    }
 
     /**
      * Set the player's deck
@@ -209,6 +218,8 @@ public class Player {
         
         // Discard any cards remaining in the player's hand
         discard( getHand() );
+        discard(getPurchased());
+        discard(getPlayed());
         
         // Draw five new cards
         draw(5);
@@ -254,7 +265,7 @@ public class Player {
         }
         
         // Add the card to the discard pile
-        getDiscard().add(card);
+        getPlayed().add(card);
         
         System.out.println("Rune: " + getRuneTotal());
         System.out.println("Battle: " + getBattleTotal());

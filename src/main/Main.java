@@ -91,8 +91,6 @@ public class Main {
 
         playerDeck.shuffle();
         playerOne.draw(5);
-        
-        
 
         centerDeck.shuffle();
         board.draw(6);
