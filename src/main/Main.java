@@ -1,6 +1,11 @@
 package main;
 
+import java.io.IOException;
 import java.util.Scanner;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
 
 import player.Player;
 import board.Board;
@@ -31,7 +36,7 @@ public class Main {
         }
 	}
 	
-    public static void main(String args[]) {
+    public static void main(String args[]) throws ParserConfigurationException, SAXException, IOException {
         DeckBuilder db = new DeckBuilder();
         Boolean playerOneTurn = true;
         Scanner scanner = new Scanner(System.in);

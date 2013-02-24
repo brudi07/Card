@@ -2,6 +2,7 @@ package card;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 
 import main.Main;
 import player.Player;
@@ -15,21 +16,21 @@ import deck.Deck;
 @SuppressWarnings("unused")
 public enum Ability {
 	
-	DRAW_ONE("transfer one card from player deck to hand"),
-	DRAW_TWO("transfer two cards from player deck to hand"),
-	BANISH_CENTER("transfer one card from center deck to banish deck"),
-	BANISH_DISCARD("transfer one card from player discard to banish deck"),
-	DEFEAT_MONSTER("defeat any monster"),
-	DEFEAT_MONSTER_THREE("defeat any monster costing three or less"),
-	AQUIRE_HERO("transfer any hero from center row to purchased"),
-	AQUIRE_HERO_THREE("transfer any hero costing three or less from center to purchased");
+	DRAW("transfer cards from player deck to hand"),
+	BANISH_CENTER("transfer card from center deck to banish deck"),
+	BANISH_DISCARD("transfer cards from player discard to banish deck"),
+	DEFEAT_MONSTER("defeat any monster costing X or less"),
+	AQUIRE_HERO("transfer any hero from center row costing X or less to purchased"),
+	CHOICE("choose from multiple abilities");
 	
 	private Ability(String description){
 		this.description = description;
 	}
     
-    public final String description;
-    public boolean optional = false;
+    private final String description;
+    private boolean optional = false;
+    private int value;
+    private List<Ability> choices;
 
     /**
      * Get the description
@@ -40,9 +41,28 @@ public enum Ability {
     public String getDescription() {
         return description;
     }
-    public boolean setOptoinal(boolean optional) {
-        return this.optional = optional;
+    
+    public void setOptoinal(boolean optional) {
+        this.optional = optional;
     }
+    public boolean getOptional(){
+    	return optional;
+    }
+    
+    public void setValue(int value) {
+    	this.value = value;
+    }
+    public int getValue(){
+    	return value;
+    }
+    
+    public void setChoices(List<Ability> choices){
+    	this.choices = choices;
+    }
+    public List<Ability> getChoices(){
+    	return choices;
+    }
+    
     
     public void perform(Player source) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException{
     	Method method = Ability.class.getMethod(this.toString(),Player.class);
@@ -103,6 +123,25 @@ public enum Ability {
         // Need to add a selection method to determine what card to banish
     	//TODO
         System.out.println(player + " banished a card from the center row");
+    }
+    
+    public String toString(){
+    	String toString = "";
+    	if (this.equals(CHOICE)){
+    		toString = "CHOICE(";
+    		String appender = "";
+    		for (Ability ability: getChoices()){
+    			toString += appender + ability;
+				appender = ",";
+    		}
+    		toString += ")";
+    	}
+    	
+    	else {
+    		toString = super.toString() + getValue();
+    	}
+    	toString += (getOptional()?"*":"");
+    	return toString;
     }
     
     

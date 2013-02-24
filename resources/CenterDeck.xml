@@ -3,6 +3,7 @@
 <deck>
 	<card>
 		<name>Lifebound Initiate</name>
+		<faction>Lifeblood</faction>
 		<type>Hero</type>
 		<count>10</count>
 		<rune>1</rune>
@@ -14,6 +15,7 @@
 	</card>
 	<card>
 		<name>Void Initiate</name>
+		<faction>Void</faction>
 		<type>Hero</type>
 		<count>10</count>
 		<rune>1</rune>
@@ -22,10 +24,28 @@
 		<runeCost>1</runeCost>
 		<battleCost>0</battleCost>
 		<honorWorth>1</honorWorth>
-		<ability>DRAW_ONE</ability>
+		<ability>DRAW1</ability>
 	</card>
 	<card>
-		<name>Mechna Initiate</name>
+		<name>Test Card</name>
+		<type>Hero</type>
+		<count>10</count>
+		<rune>1</rune>
+		<battle>0</battle>
+		<honor>0</honor>
+		<runeCost>1</runeCost>
+		<battleCost>0</battleCost>
+		<honorWorth>1</honorWorth>
+		<ability>AQUIRE_HERO1</ability>
+		<ability>AQUIRE_HERO2,AQUIRE_HERO3</ability>
+		<ability>AQUIRE_HERO4,AQUIRE_HERO5,AQUIRE_HERO6</ability>
+		<ability optional="true">BANISH_CENTER1</ability>
+		<ability optional="true">BANISH_CENTER2,BANISH_CENTER3</ability>
+		<ability optional="true">BANISH_CENTER4,BANISH_CENTER5,BANISH_CENTER6</ability>
+	</card>
+	<card>
+		<name>Mechana Initiate</name>
+		<faction>Mechana</faction>
 		<type>Hero</type>
 		<count>10</count>
 		<rune>1</rune>

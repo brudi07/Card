@@ -1,5 +1,7 @@
 package card;
 
+import java.util.List;
+
 
 /** Card
  *
@@ -15,37 +17,36 @@ public final class Card {
     private int runeCost;
     private int battleCost;
     private int honorWorth;
+    private Faction faction;
     private Type type;
-    private Ability[] abilities;
+    private List<Ability> abilities;
 
+    public enum Faction {
+    	VOID,
+    	LIFEBLOOD,
+    	MECHANA,
+    	ENLIGHTENED
+    }
     public enum Type {
         HERO,
         MONSTER,
         CONSTRUCT
     }
-    
-    public Card() {
-        
-    }
-    
-    /**
-     * Card constructor
-     *
-     */
-    public Card(String name, Type type, 
-            int rune, int battle, int honor, 
-            int runeCost, int battleCost, int honorWorth,
-            Ability... abilities) {
-        setName(name);
-        setType(type);
-        setRune(rune);
-        setBattle(battle);
-        setHonor(honor);
-        setRuneCost(runeCost);
-        setBattleCost(battleCost);
-        setHonorWorth(honorWorth);
-        setAbilities(abilities);
-    }
+
+//    public Card(String name, Type type, 
+//            int rune, int battle, int honor, 
+//            int runeCost, int battleCost, int honorWorth,
+//            Ability... abilities) {
+//        setName(name);
+//        setType(type);
+//        setRune(rune);
+//        setBattle(battle);
+//        setHonor(honor);
+//        setRuneCost(runeCost);
+//        setBattleCost(battleCost);
+//        setHonorWorth(honorWorth);
+//        setAbilities(abilities);
+//    }
     
     /**
      * Get the card name
@@ -207,13 +208,21 @@ public final class Card {
         this.type = type;
     }
 
+    public void setFaction(Faction faction){
+    	this.faction = faction;
+    }
+    
+    public Faction getFaction(){
+    	return faction;
+    }
+    
     /**
      * Get ability
      *
      * @param none
      * @return Ability
      */
-    public Ability[] getAbilities() {
+    public List<Ability> getAbilities() {
         return abilities;
     }
 
@@ -223,10 +232,7 @@ public final class Card {
      * @param Ability
      * @return void
      */
-    public void setAbilities(Ability... abilities) {
-    	if (abilities == null){
-    		abilities = new Ability[0]; 
-    	}
+    public void setAbilities(List<Ability> abilities) {
         this.abilities = abilities;
     }
 
