@@ -141,7 +141,7 @@ public class DeckBuilder {
     		ability.setOptoinal(Boolean.valueOf(optional.getNodeValue()));
     	}
     	
-    	System.out.println("final ability " +  ability);
+    	System.out.println("final ability " + ability);
     	return ability;
     }
     
