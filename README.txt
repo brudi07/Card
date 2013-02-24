@@ -12,9 +12,6 @@ TODO
 -------
 construct once per turn abilities
 construct triggers (listeners and events)
-playing optional abilities ( may do X)
-playing choice abilities ( do X or do Y)
-playing chain abilities (X must succeed in order for Y)
 implement remaining abilities
 add remaining cards to CenterDeck.xml
 
@@ -24,3 +21,6 @@ reusable dialog for asking a player to choose from any list/deck (for choosing a
 main method changed to use picker
 added CHAIN type abilities in parser and ability class
 added CHOICE type abilities in parser and ability class
+playing optional abilities ( may do X)
+playing choice abilities ( do X or do Y)
+playing chain abilities (X must succeed in order for Y)
