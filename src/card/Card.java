@@ -17,6 +17,7 @@ public final class Card {
     private int runeCost;
     private int battleCost;
     private int honorWorth;
+    private boolean banishable;
     private Faction faction;
     private Type type;
     private List<Ability> abilities;
@@ -214,6 +215,14 @@ public final class Card {
     
     public Faction getFaction(){
     	return faction;
+    }
+    
+    public void setBanishable(boolean banishable){
+    	this.banishable = banishable;
+    }
+    
+    public boolean getBanishable(){
+    	return banishable;
     }
     
     /**

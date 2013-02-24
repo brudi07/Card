@@ -1,6 +1,8 @@
 package main;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -55,6 +57,9 @@ public class Main {
 
         board.getCenterDeck().shuffle();
         board.draw(6);
+        
+        List<String> options;
+    	int choice;
 
         while (board.getHonorLeft() > 0) {
             if (playerOneTurn) {
@@ -63,68 +68,94 @@ public class Main {
                 while (!playerOption.equals("3")) {
                 	System.out.println("Cards in hand: " + playerOne.cardsByName(playerOne.getHand()));
 
-                    System.out.println("1: Play a card.");
-                    System.out.println("2: Buy a card.");
-                    System.out.println("3: End turn.");
-                    playerOption = scanner.nextLine();
+                	options = new ArrayList<String>();
+                	options.add(0,"Play a card");
+                	options.add(1,"Buy/Kill a card");
+                	options.add(2,"End turn");
+                    choice = pick(options);
 
-                    if (playerOption.equals("1")) {
-                        if (playerOne.getHand().size() > 0) {
-                            System.out.println("Which card would you like to play?");
-                            System.out.println("0: Back");
-                            for (int j = 0; j < playerOne.getHand().size(); j++) {
-                                System.out.println(j + 1 + ":" + playerOne.getHand().getCard(j).getName());
-                            }
-                            String cardChoice = scanner.nextLine();
-                            int choice = Integer.parseInt(cardChoice) - 1;
-                            if (choice == -1 ) {}
-                            else{playerOne.play(playerOne.getHand().getCard(choice));}
-                        } else {
-                            System.out.println("No cards left in hand.");
-                        }
-                    } else if (playerOption.equals("2")) {
-                        System.out.println("Which card would you like to buy?");
-                        System.out.println("Rune: " + playerOne.getRuneTotal());
-                        System.out.println("Battle: " + playerOne.getBattleTotal());
-                        System.out.println("0: Back");
-                        for (int j = 0; j < board.getCenterRow().size(); j++) {
-                            System.out.println(j + 1 + ": " + board.getCenterRow().getCard(j).getName()
-                                    + " Rune Cost: " + board.getCenterRow().getCard(j).getRuneCost()
-                                    + " Battle Cost: " + board.getCenterRow().getCard(j).getBattleCost());
-                        }
-                        System.out.println("7" + ": " + board.getMystic().topCard().getName()
-                                + " Rune Cost: " + board.getMystic().topCard().getRuneCost()
-                                + " Battle Cost: " + board.getMystic().topCard().getBattleCost());
-                        System.out.println("8" + ": " + board.getHeavy().topCard().getName()
-                                + " Rune Cost: " + board.getHeavy().topCard().getRuneCost()
-                                + " Battle Cost: " + board.getHeavy().topCard().getBattleCost());
-                        System.out.println("9" + ": " + board.getCultist().topCard().getName()
-                                + " Rune Cost: " + board.getCultist().topCard().getRuneCost()
-                                + " Battle Cost: " + board.getCultist().topCard().getBattleCost());
-                        String card = scanner.nextLine();
-                        int choice = Integer.parseInt(card) - 1;
-                        if (choice == -1 ) {}
-                        else if (choice <= 5) {
-                            playerOne.buy(playerOne, board.getCenterRow().getCard(choice), board);
-                        } else if (choice == 6) {
-                            playerOne.buy(playerOne, board.getMystic());
-                        } else if (choice == 7) {
-                            playerOne.buy(playerOne, board.getHeavy());
-                        } else if (choice == 8) {
-                            playerOne.buy(playerOne, board.getCultist());
-                        }
-                    } else if (playerOption.equals("3")) {
-                        System.out.println("End of turn.");
-                        playerOne.endOfTurn();
-                        playerOneTurn = false;
-                    } else {
-                        System.out.println("Please enter a valid option.");
+                    switch (choice){
+	                    case 1:
+	                    	if (playerOne.getHand().size() > 0) {
+	                            System.out.println("Which card would you like to play?");
+	                            choice = pick(playerOne.getHand());
+	                            if (choice > 0) {
+	                            	playerOne.play(playerOne.getHand().getCard(choice-1));
+	                            }
+	                        } else {
+	                            System.out.println("No cards left in hand.");
+	                        }
+	                    	break;
+	                    case 2:
+	                    	System.out.println("Which card would you like to buy/kill?");
+	                        System.out.println("Rune: " + playerOne.getRuneTotal());
+	                        System.out.println("Battle: " + playerOne.getBattleTotal());
+	                        
+	                        options = deckToOptions(board.getCenterRow());
+	                    	options.add(6,board.getMystic().topCard().getName());
+	                    	options.add(7,board.getHeavy().topCard().getName());
+	                    	options.add(8,board.getCultist().topCard().getName());
+	                        
+	                    	choice = pick(options);
+	                        
+	                        switch (choice) {
+                        		case 0: break;
+                        		case 7: playerOne.buy(playerOne, board.getMystic()); break;
+                        		case 8: playerOne.buy(playerOne, board.getHeavy()); break;
+                        		case 9: playerOne.buy(playerOne, board.getCultist()); break;
+                        		default: playerOne.buy(playerOne, board.getCenterRow().getCard(choice-1), board); break;
+                        	}
+	                    	break;
+	                    case 3:
+	                    	System.out.println("End of turn.");
+	                        playerOne.endOfTurn();
+	                        playerOneTurn = false;
+	                    	break;
+                    	default: 
+                    		System.out.println("Please enter a valid option.");
                     }
+                    
                 } // player out of cards
 
             } else { // end of player one turn
                 playerOneTurn = true;
             } // start on player one turn again!
         } // end of game - no honor left
+    }
+    
+    public static int pick(List<String> options){
+    	int result = -1;
+    	Scanner scanner = new Scanner(System.in);
+    	int idx = 1;
+    	System.out.println("0: Back");
+    	for (String option : options){
+    		System.out.println(idx + ": " + option);
+    		idx++;
+    	}
+    	while (result == -1){
+    		try{
+    			result = Integer.parseInt(scanner.nextLine());
+    			if (result > options.size()) {
+    				result = -1;
+    				throw new Exception();
+    			}
+    		}
+    		catch (Exception e){
+    			System.out.println("invalid input");
+    		}
+    	}
+    	return result;
+    }
+    
+    public static List<String> deckToOptions(Deck deck){
+    	List<String> options = new ArrayList<String>();
+    	for (Card card : deck.getDeck()){
+    		options.add(card.getName());
+    	}
+    	return options;
+    }
+    
+    public static int pick(Deck deck){
+    	return pick(deckToOptions(deck));
     }
 }

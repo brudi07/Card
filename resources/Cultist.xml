@@ -4,12 +4,8 @@
 	<card>
 		<name>Cultist</name>
 		<type>Monster</type>
-		<count>40</count>
-		<rune>0</rune>
-		<battle>0</battle>
+		<count>400</count>
 		<honor>2</honor>
-		<runeCost>0</runeCost>
 		<battleCost>2</battleCost>
-		<honorWorth>0</honorWorth>
 	</card>
 </deck>

@@ -6,10 +6,7 @@
 		<type>Hero</type>
 		<count>40</count>
 		<rune>2</rune>
-		<battle>0</battle>
-		<honor>0</honor>
 		<runeCost>3</runeCost>
-		<battleCost>0</battleCost>
 		<honorWorth>1</honorWorth>
 	</card>
 </deck>

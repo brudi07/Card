@@ -6,21 +6,11 @@
 		<type>Hero</type>
 		<count>8</count>
 		<rune>1</rune>
-		<battle>0</battle>
-		<honor>0</honor>
-		<runeCost>0</runeCost>
-		<battleCost>0</battleCost>
-		<honorWorth>0</honorWorth>
 	</card>
 	<card>
 		<name>Militia</name>
 		<type>Hero</type>
 		<count>2</count>
-		<rune>0</rune>
 		<battle>1</battle>
-		<honor>0</honor>
-		<runeCost>0</runeCost>
-		<battleCost>0</battleCost>
-		<honorWorth>0</honorWorth>
 	</card>
 </deck>

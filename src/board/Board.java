@@ -52,6 +52,7 @@ public class Board {
     }
     public int removeHonor(int honor) {
     	return this.honorLeft -= honor;
+    	//TODO throw event if honorLeft <= 0
     }
 
     /**
