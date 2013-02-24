@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -72,7 +74,7 @@ public class Main {
                 	options.add(0,"Play a card");
                 	options.add(1,"Buy/Kill a card");
                 	options.add(2,"End turn");
-                    choice = pick(options);
+                    choice = pick(options,null);
 
                     switch (choice){
 	                    case 1:
@@ -95,8 +97,13 @@ public class Main {
 	                    	options.add(6,board.getMystic().topCard().getName());
 	                    	options.add(7,board.getHeavy().topCard().getName());
 	                    	options.add(8,board.getCultist().topCard().getName());
+	                    	List<String> descriptions = new ArrayList<String>();
+	                    	descriptions = deckToDescriptions(board.getCenterRow());
+	                    	descriptions.add(board.getMystic().topCard().toString());
+	                    	descriptions.add(board.getHeavy().topCard().toString());
+	                    	descriptions.add(board.getCultist().topCard().toString());
 	                        
-	                    	choice = pick(options);
+	                    	choice = pick(options,descriptions);
 	                        
 	                        switch (choice) {
                         		case 0: break;
@@ -123,7 +130,8 @@ public class Main {
         } // end of game - no honor left
     }
     
-    public static int pick(List<String> options){
+    public static int pick(List<String> options, List<String> descriptions){
+    	
     	int result = -1;
     	Scanner scanner = new Scanner(System.in);
     	int idx = 1;
@@ -134,14 +142,27 @@ public class Main {
     	}
     	while (result == -1){
     		try{
-    			result = Integer.parseInt(scanner.nextLine());
-    			if (result > options.size()) {
-    				result = -1;
+    			Pattern pattern = Pattern.compile("(\\d+)(\\?*)");
+    			Matcher matcher = pattern.matcher(scanner.nextLine());
+    			matcher.find();
+    			String group1 = matcher.group(1);
+    			String group2 = matcher.group(2);
+    			result = Integer.parseInt(group1);
+    			if (result > options.size() || result < -1) {
+    				System.out.println("omg");
     				throw new Exception();
+    			}
+    			if (group2!=null && !group2.isEmpty()){
+    				try {
+    					System.out.println(descriptions.get(result-1));
+    				}catch (Exception e){System.out.println("description not available");}
+    				result = -1;
     			}
     		}
     		catch (Exception e){
-    			System.out.println("invalid input");
+    			e.printStackTrace();
+    			System.out.println("invalid input " + result);
+    			result = -1;
     		}
     	}
     	return result;
@@ -155,7 +176,15 @@ public class Main {
     	return options;
     }
     
+    public static List<String> deckToDescriptions(Deck deck){
+    	List<String> descriptions = new ArrayList<String>();
+    	for (Card card : deck.getDeck()){
+    		descriptions.add(card.toString());
+    	}
+    	return descriptions;
+    }
+    
     public static int pick(Deck deck){
-    	return pick(deckToOptions(deck));
+    	return pick(deckToOptions(deck),deckToDescriptions(deck));
     }
 }
