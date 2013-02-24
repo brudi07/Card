@@ -253,7 +253,7 @@ public final class Card {
      */
     @Override
     public String toString() {
-        return name + "\n" + type + "\n" + 
+        return name + "\n" + faction + " " + type + "\n" + 
                 "Rune Cost: " + runeCost + "\n" +
                 "Battle Cost: " + battleCost + "\n" +
                 "Rune: " + rune + "\n" +

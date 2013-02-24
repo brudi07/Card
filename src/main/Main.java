@@ -149,7 +149,6 @@ public class Main {
     			String group2 = matcher.group(2);
     			result = Integer.parseInt(group1);
     			if (result > options.size() || result < -1) {
-    				System.out.println("omg");
     				throw new Exception();
     			}
     			if (group2!=null && !group2.isEmpty()){
@@ -160,7 +159,6 @@ public class Main {
     			}
     		}
     		catch (Exception e){
-    			e.printStackTrace();
     			System.out.println("invalid input " + result);
     			result = -1;
     		}
