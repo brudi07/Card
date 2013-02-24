@@ -7,16 +7,18 @@ import main.Main;
 import board.Board;
 import card.Ability;
 import card.Card;
+import card.Card.Type;
 import deck.Deck;
 
-/** Player
+/**
+ * Player
  *
  * @author Ben Rudi
  * @version 0.1 02/23/13
  */
 public class Player {
 
-	private String name;
+    private String name;
     private Deck deck = new Deck();
     private Deck discard = new Deck();
     private Deck hand = new Deck();
@@ -28,14 +30,14 @@ public class Player {
     private int battleTotal;
 
     public String getName() {
-		return name;
-	}
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	/**
+    /**
      * Get the player's deck
      *
      * @param none
@@ -44,12 +46,15 @@ public class Player {
     public Deck getDeck() {
         return deck;
     }
+
     public Deck getConstructs() {
         return constructs;
     }
+
     public Deck getPlayed() {
         return played;
     }
+
     public Deck getPurchased() {
         return purchased;
     }
@@ -91,7 +96,7 @@ public class Player {
      * @return Player hand
      */
     public Deck getHand() {
-    	return hand;
+        return hand;
     }
 
     /**
@@ -123,8 +128,9 @@ public class Player {
     public void setHonorTotal(int honorTotal) {
         this.honorTotal = honorTotal;
     }
-    public int addHonor(int honor){
-    	return honorTotal+=honor;
+
+    public int addHonor(int honor) {
+        return honorTotal += honor;
     }
 
     /**
@@ -146,9 +152,9 @@ public class Player {
     public void setRuneTotal(int runeTotal) {
         this.runeTotal = runeTotal;
     }
-    
-    public int addRune(int runes){
-    	return runeTotal+= runes;
+
+    public int addRune(int runes) {
+        return runeTotal += runes;
     }
 
     /**
@@ -160,8 +166,9 @@ public class Player {
     public int getBattleTotal() {
         return battleTotal;
     }
-    public int addBattle(int battle){
-    	return battleTotal += battle;
+
+    public int addBattle(int battle) {
+        return battleTotal += battle;
     }
 
     /**
@@ -174,11 +181,11 @@ public class Player {
         this.battleTotal = battleTotal;
     }
 
-    public void draw(int number){
-    	Deck source = getDeck();
-    	Deck backup = getDiscard();
-    	Deck destination = getHand();
-    	Main.draw(source, backup, destination, number);
+    public void draw(int number) {
+        Deck source = getDeck();
+        Deck backup = getDiscard();
+        Deck destination = getHand();
+        Main.draw(source, backup, destination, number);
     }
 
     /**
@@ -193,16 +200,17 @@ public class Player {
             getDiscard().add(card);
         }
     }
-    public void discard(Deck deck){
-    	for (Card card : deck.getDeck()){
-    		deck.remove(card);
-    		getDiscard().add(card);
-    	}
+
+    public void discard(Deck deck) {
+        for (Card card : deck.getDeck()) {
+            deck.remove(card);
+            getDiscard().add(card);
+        }
     }
-    
-    public void banish(Deck deck, Card card){
-    	deck.remove(card);
-    	Main.board.getCenterVoid().add(card);
+
+    public void banish(Deck deck, Card card) {
+        deck.remove(card);
+        Main.board.getCenterVoid().add(card);
     }
 
     /**
@@ -215,12 +223,12 @@ public class Player {
         // Reset all of the players totals accrued this turn
         setRuneTotal(0);
         setBattleTotal(0);
-        
+
         // Discard any cards remaining in the player's hand
-        discard( getHand() );
+        discard(getHand());
         discard(getPurchased());
         discard(getPlayed());
-        
+
         // Draw five new cards
         draw(5);
     }
@@ -232,48 +240,47 @@ public class Player {
      * @param Card being played
      * @return void
      */
-    public void play( Card card) {
+    public void play(Card card) {
         System.out.println(getName() + " played " + card.getName() + ".");
-        
+
         // Remove the card from the player's hand
         getHand().remove(card);
 
         // Add the values from the card to the player's total
         addRune(card.getRune());
         addBattle(card.getBattle());
-        
+
         // Check the ability list and perform each ability
-        for (Ability ability : card.getAbilities()){
-        	try {
-				ability.perform(this);
-			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NoSuchMethodException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+        for (Ability ability : card.getAbilities()) {
+            try {
+                ability.perform(this);
+            } catch (SecurityException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IllegalArgumentException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
-        
+
         // Add the card to the discard pile
         getPlayed().add(card);
-        
+
         System.out.println("Rune: " + getRuneTotal());
         System.out.println("Battle: " + getBattleTotal());
     }
-    
-    
+
     /**
-     * Buy a card from the board
+     * Buy a card from the center row
      *
      * @param Player buying a card
      * @param Card being played
@@ -282,17 +289,55 @@ public class Player {
      */
     public void buy(Player player, Card card, Board board) {
         // Check to see if the player can afford the card
-        if (card.getRuneCost() <= player.getRuneTotal()) {
-            // Add the card to the player's discard
-            player.getDiscard().add(card);
-            // Remove the card from the center row
-            board.getCenterRow().remove(card);
-            // Replace the card in the center row
-            board.getCenterRow().add(board.getCenterDeck().topCard());
+        if (card.getRuneCost() <= player.getRuneTotal() && card.getBattleCost() <= player.getBattleTotal()) {
+            if (card.getCardType().equals(Type.HERO) || card.getCardType().equals(Type.CONSTRUCT)) {
+                // Add the card to the player's discard
+                player.getPurchased().add(card);
+                // Remove the card from the center row
+                board.getCenterRow().remove(card);
+                // Replace the card in the center row
+                board.getCenterRow().add(board.getCenterDeck().topCard());
+            } else {
+                // Remove the card from the center row
+                board.getCenterRow().remove(card);
+                // Replace the card in the center row
+                board.getCenterRow().add(board.getCenterDeck().topCard());
+            }
             // Remove the card value from the player's totals
             player.setRuneTotal(player.getRuneTotal() - card.getRuneCost());
             player.setBattleTotal(player.getBattleTotal() - card.getBattleCost());
-            System.out.println("You bought " + card.getName());
+            player.setHonorTotal(player.getHonorTotal() + card.getHonor());
+            System.out.println("You bought/defeated " + card.getName());
+        } else {
+            System.out.println("You cannot buy that.");
+        }
+    }
+
+    /**
+     * Buy a card from the side decks
+     *
+     * @param Player buying a card
+     * @param Deck being drawn from
+     * @return void
+     */
+    public void buy(Player player, Deck deck) {
+        // Check to see if the player can afford the card
+        Card card = deck.topCard();
+        if (card.getRuneCost() <= player.getRuneTotal() && card.getBattleCost() <= player.getBattleTotal()) {
+            if (card.getCardType().equals(Type.HERO) || card.getCardType().equals(Type.CONSTRUCT)) {
+                // Add the card to the player's discard
+                player.getPurchased().add(card);
+                // Remove the card from the deck
+                deck.remove(card);
+            } else {
+                // Remove the card from the deck
+                deck.remove(card);
+            }
+            // Remove the card value from the player's totals
+            player.setRuneTotal(player.getRuneTotal() - card.getRuneCost());
+            player.setBattleTotal(player.getBattleTotal() - card.getBattleCost());
+            player.setHonorTotal(player.getHonorTotal() + card.getHonor());
+            System.out.println("You bought/defeated " + card.getName());
         } else {
             System.out.println("You cannot buy that.");
         }

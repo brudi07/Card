@@ -1,11 +1,10 @@
 package card;
 
+import deck.Deck;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
 import main.Main;
 import player.Player;
-import deck.Deck;
 
 /** Ability
  *
