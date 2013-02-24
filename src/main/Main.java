@@ -60,7 +60,7 @@ public class Main {
                 
                 String playerOption = "";
                 while (!playerOption.equals("3")) {
-                	System.out.println("Cards in hand: " + playerOne.cardsByName(playerHand));
+                	System.out.println("Cards in hand: " + playerOne.cardsByName(playerOne.getHand()));
 
                     System.out.println("1: Play a card.");
                     System.out.println("2: Buy a card.");

@@ -3,10 +3,10 @@ package player;
 import java.lang.reflect.InvocationTargetException;
 
 import main.Main;
-
 import board.Board;
 import card.Ability;
 import card.Card;
+import card.Card.Type;
 import deck.Deck;
 
 /** Player
