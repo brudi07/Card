@@ -1,11 +1,12 @@
 package main;
 
+import java.util.Scanner;
+
+import player.Player;
 import board.Board;
 import card.Card;
 import deck.Deck;
 import deck.DeckBuilder;
-import java.util.Scanner;
-import player.Player;
 
 /**
  *
