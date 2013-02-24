@@ -126,9 +126,9 @@ public enum Ability {
     }
     
     public String toString(){
-    	String toString = "";
+    	String toString = super.toString();
     	if (this.equals(CHOICE)){
-    		toString = "CHOICE(";
+    		toString += "(";
     		String appender = "";
     		for (Ability ability: getChoices()){
     			toString += appender + ability;
@@ -136,9 +136,8 @@ public enum Ability {
     		}
     		toString += ")";
     	}
-    	
     	else {
-    		toString = super.toString() + getValue();
+    		toString += getValue();
     	}
     	toString += (getOptional()?"*":"");
     	return toString;
