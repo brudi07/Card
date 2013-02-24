@@ -2,6 +2,7 @@ package card;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 import main.Main;
@@ -81,8 +82,20 @@ public class Ability {
     }
     
     public boolean perform(Player source) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException{
-    	Method method = Ability.class.getMethod(getType().toString(),Player.class,int.class);
-    	return (Boolean) method.invoke(this, source, getValue());
+    	boolean perform = true;
+    	if (getOptional()){
+    		List<String> options = new ArrayList<String>();
+    		options.add("Yes");
+    		options.add("No");
+    		System.out.println(getType()+String.valueOf(getValue())+"?");
+    		int choice = Main.pick(options, null);
+    		perform = choice == 1;
+    	}
+    	if (perform) {
+	    	Method method = Ability.class.getMethod(getType().toString(),Player.class,int.class);
+	    	return (Boolean) method.invoke(this, source, getValue());
+    	}
+    	return false;
     }
     
     public boolean DRAW(Player player, int number){
@@ -153,6 +166,26 @@ public class Ability {
     public boolean TAKE_PLAYER_CARD(Player player, int number){
     	//TODO transfer card from opponent's hand to ?
     	return false;
+    }
+    
+    public boolean CHOICE(Player player, int number) throws SecurityException, IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException{
+    	List<String> options = new ArrayList<String>();
+    	List<String> descriptions = new ArrayList<String>();
+    	for (Ability ability :getAbilities()){
+    		options.add(ability.toString() + ability.getValue());
+    		descriptions.add(ability.getDescription());
+    	}
+    	int choice = Main.pick(options,descriptions);
+    	
+    	return getAbilities().get(choice-1).perform(player);//TODO TEST
+    }
+    
+    public boolean CHAIN(Player player, int number) throws SecurityException, IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException{
+    	
+    	for (Ability ability : getAbilities()){
+    		if (!ability.perform(player)) return false;
+    	}
+    	return true;//TODO TEST
     }
     
     
