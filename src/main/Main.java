@@ -1,16 +1,11 @@
 package main;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
-import player.Player;
 import board.Board;
-import card.Ability;
 import card.Card;
-import card.Card.Type;
 import deck.Deck;
 import deck.DeckBuilder;
+import java.util.Scanner;
+import player.Player;
 
 /**
  *
@@ -43,11 +38,11 @@ public class Main {
         board = new Board();
         Player playerOne = new Player();
         playerOne.setName("Ben");
-        playerOne.setPlayerDeck(db.deckReader("C://Users/Owner/Desktop/PlayerDeck.xml"));
-        board.setCenterDeck(db.deckReader("C://Users/Owner/Desktop/CenterDeck.xml"));
-        board.setMystic(db.deckReader("C://Users/Owner/Desktop/Mystic.xml"));
-        board.setHeavy(db.deckReader("C://Users/Owner/Desktop/Heavy.xml"));
-        board.setCultist(db.deckReader("C://Users/Owner/Desktop/Cultist.xml"));
+        playerOne.setPlayerDeck(db.deckReader("resources/PlayerDeck.xml"));
+        board.setCenterDeck(db.deckReader("resources/CenterDeck.xml"));
+        board.setMystic(db.deckReader("resources/Mystic.xml"));
+        board.setHeavy(db.deckReader("resources/Heavy.xml"));
+        board.setCultist(db.deckReader("resources/Cultist.xml"));
 
         playerOne.getDeck().shuffle();
         playerOne.draw(5);

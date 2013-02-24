@@ -4,25 +4,23 @@
 	<card>
 		<name>Apprentice</name>
 		<type>Hero</type>
-		<count>1</count>
+		<count>8</count>
 		<rune>1</rune>
 		<battle>0</battle>
 		<honor>0</honor>
 		<runeCost>0</runeCost>
 		<battleCost>0</battleCost>
 		<honorWorth>0</honorWorth>
-		<ability>DRAW_ONE</ability>
 	</card>
 	<card>
-		<name>Test</name>
+		<name>Militia</name>
 		<type>Hero</type>
-		<count>1</count>
-		<rune>1</rune>
-		<battle>0</battle>
+		<count>2</count>
+		<rune>0</rune>
+		<battle>1</battle>
 		<honor>0</honor>
 		<runeCost>0</runeCost>
 		<battleCost>0</battleCost>
 		<honorWorth>0</honorWorth>
-		<ability>NOOB</ability>
 	</card>
 </deck>
