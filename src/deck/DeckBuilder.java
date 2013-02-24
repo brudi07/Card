@@ -1,16 +1,19 @@
 package deck;
 
-import card.Ability;
-import card.Card;
-import card.Card.Type;
 import java.io.File;
 import java.util.ArrayList;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import card.Ability;
+import card.Card;
+import card.Card.Type;
 
 /**
  * Deck Reader
