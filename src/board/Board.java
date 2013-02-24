@@ -41,10 +41,7 @@ public class Board {
     }
 
     public void draw(int number){
-    	Deck source = getCenterDeck();
-    	Deck backup = getCenterVoid();
-    	Deck destination = getCenterRow();
-    	Main.draw(source, backup, destination, number);
+    	Main.draw(getCenterDeck(), getCenterVoid(), getCenterRow(), number);
     }
     
     /**

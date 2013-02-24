@@ -175,10 +175,7 @@ public class Player {
     }
 
     public void draw(int number){
-    	Deck source = getDeck();
-    	Deck backup = getDiscard();
-    	Deck destination = getHand();
-    	Main.draw(source, backup, destination, number);
+    	Main.draw(getDeck(), getDiscard(), getHand(), number);
     }
 
     /**
@@ -194,10 +191,8 @@ public class Player {
         }
     }
     public void discard(Deck deck){
-    	for (Card card : deck.getDeck()){
-    		deck.remove(card);
-    		getDiscard().add(card);
-    	}
+    	getDiscard().addAll(deck);
+    	deck.clear();
     }
     
     public void banish(Deck deck, Card card){
@@ -216,7 +211,7 @@ public class Player {
         setRuneTotal(0);
         setBattleTotal(0);
         
-        // Discard any cards remaining in the player's hand
+        // Discard any cards remaining in the player's hand,purchased cards, and played cards
         discard( getHand() );
         discard(getPurchased());
         discard(getPlayed());

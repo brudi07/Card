@@ -51,7 +51,6 @@ public class Main {
         Deck voidDeck = board.getCenterVoid();
         Deck centerRow = board.getCenterRow();
         
-
         Card apprentice = new Card("Apprentice", Type.HERO,
                 1, 0, 0,
                 0, 0, 0,
@@ -97,10 +96,11 @@ public class Main {
 
         while (board.getHonorLeft() > 0) {
             if (playerOneTurn) {
-                System.out.println("Cards in hand: " + playerOne.cardsByName(playerHand));
-
+                
                 String playerOption = "";
                 while (!playerOption.equals("3")) {
+                	System.out.println("Cards in hand: " + playerOne.cardsByName(playerHand));
+
                     System.out.println("1: Play a card.");
                     System.out.println("2: Buy a card.");
                     System.out.println("3: End turn.");
@@ -122,14 +122,17 @@ public class Main {
                         System.out.println("Which card would you like to buy?");
                         System.out.println("Rune: " + playerOne.getRuneTotal());
                         System.out.println("Battle: " + playerOne.getBattleTotal());
+                        System.out.println("0: Back");
                         for (int j = 0; j < centerRow.size(); j++) {
                             System.out.println(j + 1 + ": " + centerRow.getCard(j).getName()
                                     + " Rune Cost: " + centerRow.getCard(j).getRuneCost()
                                     + " Battle Cost: " + centerRow.getCard(j).getBattleCost());
                         }
                         String card = scanner.nextLine();
-                        int choice = Integer.parseInt(card) - 1;
-                        playerOne.buy(playerOne,centerRow.getCard(choice), board);
+                        int choice = Integer.parseInt(card);
+                        if (choice != 0) {
+                        	playerOne.buy(playerOne,centerRow.getCard(choice-1), board);
+                        }
                     } else if (playerOption.equals("3")) {
                         System.out.println("End of turn.");
                         playerOne.endOfTurn();

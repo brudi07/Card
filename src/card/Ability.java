@@ -19,8 +19,10 @@ public enum Ability {
 	DRAW_TWO("transfer two cards from player deck to hand"),
 	BANISH_CENTER("transfer one card from center deck to banish deck"),
 	BANISH_DISCARD("transfer one card from player discard to banish deck"),
-	DEFEAT_MONSTER(""),
-	AQUIRE_HERO("");
+	DEFEAT_MONSTER("defeat any monster"),
+	DEFEAT_MONSTER_THREE("defeat any monster costing three or less"),
+	AQUIRE_HERO("transfer any hero from center row to purchased"),
+	AQUIRE_HERO_THREE("transfer any hero costing three or less from center to purchased");
 	
 	private Ability(String description){
 		this.description = description;
