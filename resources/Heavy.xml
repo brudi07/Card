@@ -5,11 +5,8 @@
 		<name>Heavy Infantry</name>
 		<type>Hero</type>
 		<count>40</count>
-		<rune>0</rune>
 		<battle>2</battle>
-		<honor>0</honor>
 		<runeCost>2</runeCost>
-		<battleCost>0</battleCost>
 		<honorWorth>1</honorWorth>
 	</card>
 </deck>

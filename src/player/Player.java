@@ -124,7 +124,8 @@ public class Player {
         this.honorTotal = honorTotal;
     }
     public int addHonor(int honor){
-    	return honorTotal+=honor;
+    	Main.board.removeHonor(honor);
+    	return honorTotal += honor;
     }
 
     /**
@@ -149,6 +150,16 @@ public class Player {
     
     public int addRune(int runes){
     	return runeTotal+= runes;
+    }
+    
+    
+    public boolean spendRunes(int runes){
+    	if (runeTotal >= runes){
+    		runeTotal -= runes;
+    		return true;
+    	} else {
+    		return false;
+    	}
     }
 
     /**
@@ -176,6 +187,7 @@ public class Player {
 
     public void draw(int number){
     	Main.draw(getDeck(), getDiscard(), getHand(), number);
+    	System.out.println(getName() + " drew " + number + " card(s).");
     }
 
     /**
@@ -184,11 +196,15 @@ public class Player {
      * @param Number of cards to discard
      * @return void
      */
-    public void discard(int number) {
+    public boolean discard(int number) {
+    	int discarded = 0;
         for (int i = 0; i < number && getHand().size() > i; i++) {
             Card card = getHand().remove(i);
             getDiscard().add(card);
+            discarded+=1;
         }
+        System.out.println(getName() + " discarded " + discarded + " card(s).");
+        return discarded >= number;
     }
     public void discard(Deck deck){
     	getDiscard().addAll(deck);
@@ -358,5 +374,9 @@ public class Player {
             }
         }
         return cards;
+    }
+    
+    public String toString(){
+    	return getName();
     }
 }

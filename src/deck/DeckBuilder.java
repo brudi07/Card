@@ -44,7 +44,7 @@ public class DeckBuilder {
         NodeList nList = doc.getElementsByTagName("card");
         
         for (int temp = 0; temp < nList.getLength(); temp++) {
-        	
+        	String name = "";
         	try {
 
 	            Node nNode = nList.item(temp);
@@ -60,9 +60,10 @@ public class DeckBuilder {
 	                Element eElement = (Element) nNode;
 	
 	                // Get all of the xml values
-	                String name = getTextContent(eElement, "name");
+	                name = getTextContent(eElement, "name");
 	                String faction = optTextContent(eElement, "faction","").toUpperCase();
 	                String type = getTextContent(eElement, "type").toUpperCase();
+	                String banishable = optTextContent(eElement, "banishable", "true");
 	                String count = optTextContent(eElement, "count", "1");
 	                String rune = optTextContent(eElement, "rune", "0");
 	                String battle = optTextContent(eElement, "battle","0");
@@ -74,6 +75,7 @@ public class DeckBuilder {
 	                    // Set all of the xml values to the card
 	                card.setName(name);
 	                if (!faction.isEmpty())card.setFaction(Faction.valueOf(faction));
+	                card.setBanishable(Boolean.valueOf(banishable));
 	                card.setType(Type.valueOf(type));
 	                card.setRune(Integer.parseInt(rune));
 	                card.setBattle(Integer.parseInt(battle));
@@ -93,7 +95,7 @@ public class DeckBuilder {
 	                    	Ability ability = createAbility(eAbility);
 	                        abilities.add(ability);
 	                    } catch (Exception ex) {
-	                        System.out.println("Exception with ability: " + ex);
+	                        System.out.println("Exception with " + name + " ability: " + ex);
 	                    }
 	                }
 	                card.setAbilities(abilities);
@@ -107,38 +109,46 @@ public class DeckBuilder {
 	
 	            }
         	} catch (Exception ex) {
-        		System.out.println("Exception with creating the card: " + ex);
+        		System.out.println("Exception with creating " + name + ": " + ex);
         	}
         }
         return deck;
     }
     
     //create an ability from a node, including optional status and creating choices
-    private Ability createAbility(Node node){
+    private Ability createAbility(Node node) throws Exception{
     	Ability ability;
     	
     	String abilityString = node.getTextContent().toUpperCase();
-    	
-    	List<Ability> choices = new ArrayList<Ability>();
-    	for (String choice : abilityString.split(",")){
-    		choice = choice.trim().toUpperCase();
-    		Ability ab = createAbility(choice);
-    		//System.out.println(choices + "<----"+ ab);
-    		choices.add(ab);
-    		//System.out.println(choices);
+    	List<Ability> abilities = new ArrayList<Ability>();
+    	for (String abString : abilityString.split(",")){
+    		abString = abString.trim().toUpperCase();
+    		Ability ab = createAbility(abString);
+    		//System.out.println(abilities + "<----"+ ab);
+    		abilities.add(ab);
+    		//System.out.println(abilities);
     	}
-    	if (choices.size() > 1){
-    		ability = new Ability(Ability.Type.CHOICE);
-    		ability.setChoices(choices);
+    	
+    	if (abilities.size() > 1){
+    		Ability.Type abilityType;
+    		Node nType = node.getAttributes().getNamedItem("type");
+        	if (nType != null){
+        		String type = nType.getNodeValue().toUpperCase();
+        		abilityType = Ability.Type.valueOf(type);
+        	} else{
+        		throw new Exception("no type set for compound ability");
+        	}
+    		ability = new Ability(abilityType);
+    		ability.setAbilities(abilities);
     	}
     	else{
-    		ability = choices.get(0);
+    		ability = abilities.get(0);
     	}
     	
     	//if optional exists, set it
-    	Node optional = node.getAttributes().getNamedItem("optional");
-    	if (optional != null) {
-    		ability.setOptoinal(Boolean.valueOf(optional.getNodeValue()));
+    	Node nOptional = node.getAttributes().getNamedItem("optional");
+    	if (nOptional != null) {
+    		ability.setOptoinal(Boolean.valueOf(nOptional.getNodeValue()));
     	}
     	
     	//System.out.println("final ability " + ability);
