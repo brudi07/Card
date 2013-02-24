@@ -259,8 +259,13 @@ public class Player {
 			}
         }
         
-        // Add the card to the discard pile
-        getPlayed().add(card);
+        if (card.getCardType().equals(Type.CONSTRUCT)) {
+            // Add card to the construct deck
+            getConstructs().add(card);
+        } else {
+            // Add the card to the played deck
+            getPlayed().add(card);
+        }
         
         System.out.println("Rune: " + getRuneTotal());
         System.out.println("Battle: " + getBattleTotal());
@@ -285,17 +290,18 @@ public class Player {
                 board.getCenterRow().remove(card);
                 // Replace the card in the center row
                 board.getCenterRow().add(board.getCenterDeck().topCard());
+                System.out.println("You acquired " + card.getName());
             } else {
                 // Remove the card from the center row
                 board.getCenterRow().remove(card);
                 // Replace the card in the center row
                 board.getCenterRow().add(board.getCenterDeck().topCard());
+                System.out.println("You defeated " + card.getName());
             }
             // Remove the card value from the player's totals
             player.setRuneTotal(player.getRuneTotal() - card.getRuneCost());
             player.setBattleTotal(player.getBattleTotal() - card.getBattleCost());
             player.setHonorTotal(player.getHonorTotal() + card.getHonor());
-            System.out.println("You bought/defeated " + card.getName());
         } else {
             System.out.println("You cannot buy that.");
         }
@@ -309,25 +315,31 @@ public class Player {
      * @return void
      */
     public void buy(Player player, Deck deck) {
-        // Check to see if the player can afford the card
-        Card card = deck.topCard();
-        if (card.getRuneCost() <= player.getRuneTotal() && card.getBattleCost() <= player.getBattleTotal()) {
-            if (card.getCardType().equals(Type.HERO) || card.getCardType().equals(Type.CONSTRUCT)) {
-                // Add the card to the player's discard
-                player.getPurchased().add(card);
-                // Remove the card from the deck
-                deck.remove(card);
+        
+        if (deck.size() > 0) {
+            Card card = deck.topCard();
+            // Check to see if the player can afford the card
+            if (card.getRuneCost() <= player.getRuneTotal() && card.getBattleCost() <= player.getBattleTotal()) {
+                if (card.getCardType().equals(Type.HERO) || card.getCardType().equals(Type.CONSTRUCT)) {
+                    // Add the card to the player's discard
+                    player.getPurchased().add(card);
+                    // Remove the card from the deck
+                    deck.remove(card);
+                    System.out.println("You acquired " + card.getName());
+                } else {               
+                    // Remove the card from the deck
+                    deck.remove(card);
+                    System.out.println("You defeated " + card.getName());
+                }
+                // Remove the card value from the player's totals
+                player.setRuneTotal(player.getRuneTotal() - card.getRuneCost());
+                player.setBattleTotal(player.getBattleTotal() - card.getBattleCost());
+                player.setHonorTotal(player.getHonorTotal() + card.getHonor());
             } else {
-                // Remove the card from the deck
-                deck.remove(card);
+                System.out.println("You cannot buy that.");
             }
-            // Remove the card value from the player's totals
-            player.setRuneTotal(player.getRuneTotal() - card.getRuneCost());
-            player.setBattleTotal(player.getBattleTotal() - card.getBattleCost());
-            player.setHonorTotal(player.getHonorTotal() + card.getHonor());
-            System.out.println("You bought/defeated " + card.getName());
         } else {
-            System.out.println("You cannot buy that.");
+            System.out.println("Deck is out of cards.");
         }
     }
 
