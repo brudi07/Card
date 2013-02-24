@@ -49,19 +49,19 @@ public enum Ability {
     	method.invoke(this, source);
     }
     
-    private void DRAW_ONE(Player player){
+    public void DRAW_ONE(Player player){
     	draw(player,1);
     }
     
-    private void DRAW_TWO(Player player){
+    public void DRAW_TWO(Player player){
     	draw(player,2);
     }
     
-    private void BANISH_CENTER(Player player){
+    public void BANISH_CENTER(Player player){
     	banish(player,Main.board.getCenterRow());
     }
     
-    private void BANISH_DISCARD(Player player){
+    public void BANISH_DISCARD(Player player){
     	banish(player,player.getDiscard());
     }
 

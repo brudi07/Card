@@ -66,12 +66,14 @@ public class Main {
                     if (playerOption.equals("1")) {
                         if (playerOne.getHand().size() > 0) {
                             System.out.println("Which card would you like to play?");
+                            System.out.println("0: Back");
                             for (int j = 0; j < playerOne.getHand().size(); j++) {
                                 System.out.println(j + 1 + ":" + playerOne.getHand().getCard(j).getName());
                             }
                             String cardChoice = scanner.nextLine();
                             int choice = Integer.parseInt(cardChoice) - 1;
-                            playerOne.play(playerOne.getHand().getCard(choice));
+                            if (choice == -1 ) {}
+                            else{playerOne.play(playerOne.getHand().getCard(choice));}
                         } else {
                             System.out.println("No cards left in hand.");
                         }
