@@ -163,7 +163,10 @@ public class DeckBuilder {
     	if (nList != null){
     		Node node = nList.item(0);
     		if (node != null){
-    			result = nList.item(0).getTextContent();
+    			String context = nList.item(0).getTextContent();
+    			if (context != null && !context.trim().isEmpty()){
+    				result = nList.item(0).getTextContent();
+    			}
     		}
     	}
     	return result;
@@ -171,7 +174,7 @@ public class DeckBuilder {
     
     private String getTextContent(Element element, String subElement) throws Exception{
     	String result = optTextContent(element,subElement,null);
-    	if (result == null){
+    	if (result == null || result.trim().isEmpty()){
     		throw new Exception("no value specified for " + subElement);
     	}
     	return result;
