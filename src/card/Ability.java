@@ -14,32 +14,37 @@ import deck.Deck;
  * @version 0.1 02/23/13
  */
 @SuppressWarnings("unused")
-public enum Ability {
+public class Ability {
 	
-	DRAW("transfer cards from player deck to hand"),
-	BANISH_CENTER("transfer card from center deck to banish deck"),
-	BANISH_DISCARD("transfer cards from player discard to banish deck"),
-	DEFEAT_MONSTER("defeat any monster costing X or less"),
-	AQUIRE_HERO("transfer any hero from center row costing X or less to purchased"),
-	CHOICE("choose from multiple abilities");
-	
-	private Ability(String description){
-		this.description = description;
+	public enum Type {
+		DRAW("transfer cards from player deck to hand"),
+		BANISH_CENTER("transfer card from center deck to banish deck"),
+		BANISH_DISCARD("transfer cards from player discard to banish deck"),
+		DEFEAT_MONSTER("defeat any monster costing X or less"),
+		AQUIRE_HERO("transfer any hero from center row costing X or less to purchased"),
+		CHOICE("choose from multiple abilities");
+		
+		public final String description;
+		private Type(String description){
+			this.description = description;
+		}
 	}
+	
+	private final Type type;
+	private boolean optional = false;
+	private int value;
+	private List<Ability> choices;
     
-    private final String description;
-    private boolean optional = false;
-    private int value;
-    private List<Ability> choices;
-
-    /**
-     * Get the description
-     *
-     * @param none
-     * @return Card description
-     */
+    public Ability(Type type){
+    	this.type = type;
+    }
+    
+    public Type getType(){
+    	return type;
+    }
+    
     public String getDescription() {
-        return description;
+        return type.description;
     }
     
     public void setOptoinal(boolean optional) {
@@ -63,26 +68,21 @@ public enum Ability {
     	return choices;
     }
     
-    
     public void perform(Player source) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException{
-    	Method method = Ability.class.getMethod(this.toString(),Player.class);
-    	method.invoke(this, source);
+    	Method method = Ability.class.getMethod(getType().toString(),Player.class,Integer.TYPE);
+    	method.invoke(this, source, getValue());
     }
     
-    public void DRAW_ONE(Player player){
-    	draw(player,1);
+    public void DRAW(Player player, int number){
+    	draw(player,number);
     }
     
-    public void DRAW_TWO(Player player){
-    	draw(player,2);
+    public void BANISH_CENTER(Player player, int number){
+    	banish(player,Main.board.getCenterRow(), number);
     }
     
-    public void BANISH_CENTER(Player player){
-    	banish(player,Main.board.getCenterRow());
-    }
-    
-    public void BANISH_DISCARD(Player player){
-    	banish(player,player.getDiscard());
+    public void BANISH_DISCARD(Player player, int number){
+    	banish(player,player.getDiscard(), number);
     }
 
     
@@ -118,7 +118,7 @@ public enum Ability {
      * @param Number of cards being banishing
      * @return Banish From Board ability
      */
-    public void banish(Player player, Deck deck) {
+    public void banish(Player player, Deck deck, int number) {
         
         // Need to add a selection method to determine what card to banish
     	//TODO
@@ -126,8 +126,8 @@ public enum Ability {
     }
     
     public String toString(){
-    	String toString = super.toString();
-    	if (this.equals(CHOICE)){
+    	String toString = type.toString();
+    	if (getType() == Type.CHOICE){
     		toString += "(";
     		String appender = "";
     		for (Ability ability: getChoices()){

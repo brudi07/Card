@@ -123,12 +123,12 @@ public class DeckBuilder {
     	for (String choice : abilityString.split(",")){
     		choice = choice.trim().toUpperCase();
     		Ability ab = createAbility(choice);
-    		System.out.println(choices + "<----"+ ab);
+    		//System.out.println(choices + "<----"+ ab);
     		choices.add(ab);
-    		System.out.println(choices);
+    		//System.out.println(choices);
     	}
     	if (choices.size() > 1){
-    		ability = Ability.CHOICE;
+    		ability = new Ability(Ability.Type.CHOICE);
     		ability.setChoices(choices);
     	}
     	else{
@@ -141,18 +141,19 @@ public class DeckBuilder {
     		ability.setOptoinal(Boolean.valueOf(optional.getNodeValue()));
     	}
     	
-    	System.out.println("final ability " + ability);
+    	//System.out.println("final ability " + ability);
     	return ability;
     }
     
     //create a single ability from a string, optional=false, no choices
     private Ability createAbility(String abilityString){
-    	Pattern p = Pattern.compile("([a-zA-Z_]+)(\\d*)"); 
-    	Matcher m = p.matcher(abilityString);
-    	m.find();
+    	Pattern pattern = Pattern.compile("([a-zA-Z_]+)(\\d*)"); 
+    	Matcher matcher = pattern.matcher(abilityString);
+    	matcher.find();
     	
-    	Ability ability = Ability.valueOf(m.group(1));
-    	ability.setValue(Integer.valueOf(m.group(2)));
+    	Ability.Type type = Ability.Type.valueOf(matcher.group(1));
+    	Ability ability = new Ability(type);
+    	ability.setValue(Integer.valueOf(matcher.group(2)));
     	
     	return ability;
     }
@@ -160,7 +161,7 @@ public class DeckBuilder {
     private String optTextContent(Element element, String subElement, String defaultValue ){
     	String result = defaultValue;
     	NodeList nList = element.getElementsByTagName(subElement);
-    	if (nList != null){
+    	if (nList != null) {
     		Node node = nList.item(0);
     		if (node != null){
     			String context = nList.item(0).getTextContent();
