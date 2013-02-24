@@ -277,17 +277,55 @@ public class Player {
      */
     public void buy(Player player, Card card, Board board) {
         // Check to see if the player can afford the card
-        if (card.getRuneCost() <= player.getRuneTotal()) {
-            // Add the card to the player's discard
-            player.getDiscard().add(card);
-            // Remove the card from the center row
-            board.getCenterRow().remove(card);
-            // Replace the card in the center row
-            board.getCenterRow().add(board.getCenterDeck().topCard());
+        if (card.getRuneCost() <= player.getRuneTotal() && card.getBattleCost() <= player.getBattleTotal()) {
+            if (card.getCardType().equals(Type.HERO) || card.getCardType().equals(Type.CONSTRUCT)) {
+                // Add the card to the player's discard
+                player.getPurchased().add(card);
+                // Remove the card from the center row
+                board.getCenterRow().remove(card);
+                // Replace the card in the center row
+                board.getCenterRow().add(board.getCenterDeck().topCard());
+            } else {
+                // Remove the card from the center row
+                board.getCenterRow().remove(card);
+                // Replace the card in the center row
+                board.getCenterRow().add(board.getCenterDeck().topCard());
+            }
             // Remove the card value from the player's totals
             player.setRuneTotal(player.getRuneTotal() - card.getRuneCost());
             player.setBattleTotal(player.getBattleTotal() - card.getBattleCost());
-            System.out.println("You bought " + card.getName());
+            player.setHonorTotal(player.getHonorTotal() + card.getHonor());
+            System.out.println("You bought/defeated " + card.getName());
+        } else {
+            System.out.println("You cannot buy that.");
+        }
+    }
+
+    /**
+     * Buy a card from the side decks
+     *
+     * @param Player buying a card
+     * @param Deck being drawn from
+     * @return void
+     */
+    public void buy(Player player, Deck deck) {
+        // Check to see if the player can afford the card
+        Card card = deck.topCard();
+        if (card.getRuneCost() <= player.getRuneTotal() && card.getBattleCost() <= player.getBattleTotal()) {
+            if (card.getCardType().equals(Type.HERO) || card.getCardType().equals(Type.CONSTRUCT)) {
+                // Add the card to the player's discard
+                player.getPurchased().add(card);
+                // Remove the card from the deck
+                deck.remove(card);
+            } else {
+                // Remove the card from the deck
+                deck.remove(card);
+            }
+            // Remove the card value from the player's totals
+            player.setRuneTotal(player.getRuneTotal() - card.getRuneCost());
+            player.setBattleTotal(player.getBattleTotal() - card.getBattleCost());
+            player.setHonorTotal(player.getHonorTotal() + card.getHonor());
+            System.out.println("You bought/defeated " + card.getName());
         } else {
             System.out.println("You cannot buy that.");
         }

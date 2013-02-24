@@ -39,59 +39,20 @@ public class Main {
         DeckBuilder db = new DeckBuilder();
         Boolean playerOneTurn = true;
         Scanner scanner = new Scanner(System.in);
-        
+
         board = new Board();
-        Player playerOne = new Player();      
+        Player playerOne = new Player();
+        playerOne.setName("Ben");
+        playerOne.setPlayerDeck(db.deckReader("C://Users/Owner/Desktop/PlayerDeck.xml"));
+        board.setCenterDeck(db.deckReader("C://Users/Owner/Desktop/CenterDeck.xml"));
+        board.setMystic(db.deckReader("C://Users/Owner/Desktop/Mystic.xml"));
+        board.setHeavy(db.deckReader("C://Users/Owner/Desktop/Heavy.xml"));
+        board.setCultist(db.deckReader("C://Users/Owner/Desktop/Cultist.xml"));
 
-        Deck playerDeck = playerOne.getDeck();
-        Deck playerHand = playerOne.getHand(); 
-        Deck playerDiscard = playerOne.getDiscard();
-        
-        Deck centerDeck = db.deckReader("resources/deck.xml");
-        Deck voidDeck = board.getCenterVoid();
-        Deck centerRow = board.getCenterRow();
-        
-        Card apprentice = new Card("Apprentice", Type.HERO,
-                1, 0, 0,
-                0, 0, 0,
-                null);
-
-        Card militia = new Card("Militia", Type.HERO,
-                0, 1, 0,
-                0, 0, 0,
-                null);
-
-        Card mystic = new Card("Mystic", Type.HERO,
-                3, 0, 0,
-                3, 0, 1,
-                null);
-        
-        Card heavy = new Card("Heavy", Type.HERO,
-                0, 2, 0,
-                2, 0, 1,
-                null);
-        
-        Card initiate = new Card("Initiate", Type.HERO,
-                0, 0, 0,
-                1, 0, 1,
-                Ability.DRAW_ONE);
-
-        for (int i = 0; i < 8; i++) {
-            playerOne.getDeck().add(apprentice);
-        }
-        for (int i = 0; i < 2; i++) {
-            playerOne.getDeck().add(militia);
-        }
-        for (int i = 0; i < 5; i++) {
-            board.getCenterDeck().add(mystic);
-            board.getCenterDeck().add(initiate);
-            board.getCenterDeck().add(heavy);
-        }
-
-        playerDeck.shuffle();
+        playerOne.getDeck().shuffle();
         playerOne.draw(5);
 
-        centerDeck.shuffle();
+        board.getCenterDeck().shuffle();
         board.draw(6);
 
         while (board.getHonorLeft() > 0) {
@@ -107,14 +68,14 @@ public class Main {
                     playerOption = scanner.nextLine();
 
                     if (playerOption.equals("1")) {
-                        if (playerHand.size() > 0) {
+                        if (playerOne.getHand().size() > 0) {
                             System.out.println("Which card would you like to play?");
-                            for (int j = 0; j < playerHand.size(); j++) {
-                                System.out.println(j + 1 + ":" + playerHand.getCard(j).getName());
+                            for (int j = 0; j < playerOne.getHand().size(); j++) {
+                                System.out.println(j + 1 + ":" + playerOne.getHand().getCard(j).getName());
                             }
                             String cardChoice = scanner.nextLine();
                             int choice = Integer.parseInt(cardChoice) - 1;
-                            playerOne.play(playerHand.getCard(choice));
+                            playerOne.play(playerOne.getHand().getCard(choice));
                         } else {
                             System.out.println("No cards left in hand.");
                         }
@@ -123,15 +84,31 @@ public class Main {
                         System.out.println("Rune: " + playerOne.getRuneTotal());
                         System.out.println("Battle: " + playerOne.getBattleTotal());
                         System.out.println("0: Back");
-                        for (int j = 0; j < centerRow.size(); j++) {
-                            System.out.println(j + 1 + ": " + centerRow.getCard(j).getName()
-                                    + " Rune Cost: " + centerRow.getCard(j).getRuneCost()
-                                    + " Battle Cost: " + centerRow.getCard(j).getBattleCost());
+                        for (int j = 0; j < board.getCenterRow().size(); j++) {
+                            System.out.println(j + 1 + ": " + board.getCenterRow().getCard(j).getName()
+                                    + " Rune Cost: " + board.getCenterRow().getCard(j).getRuneCost()
+                                    + " Battle Cost: " + board.getCenterRow().getCard(j).getBattleCost());
                         }
+                        System.out.println("7" + ": " + board.getMystic().topCard().getName()
+                                + " Rune Cost: " + board.getMystic().topCard().getRuneCost()
+                                + " Battle Cost: " + board.getMystic().topCard().getBattleCost());
+                        System.out.println("8" + ": " + board.getHeavy().topCard().getName()
+                                + " Rune Cost: " + board.getHeavy().topCard().getRuneCost()
+                                + " Battle Cost: " + board.getHeavy().topCard().getBattleCost());
+                        System.out.println("9" + ": " + board.getCultist().topCard().getName()
+                                + " Rune Cost: " + board.getCultist().topCard().getRuneCost()
+                                + " Battle Cost: " + board.getCultist().topCard().getBattleCost());
                         String card = scanner.nextLine();
-                        int choice = Integer.parseInt(card);
-                        if (choice != 0) {
-                        	playerOne.buy(playerOne,centerRow.getCard(choice-1), board);
+                        int choice = Integer.parseInt(card) - 1;
+                        if (choice == -1 ) {}
+                        else if (choice <= 5) {
+                            playerOne.buy(playerOne, board.getCenterRow().getCard(choice), board);
+                        } else if (choice == 6) {
+                            playerOne.buy(playerOne, board.getMystic());
+                        } else if (choice == 7) {
+                            playerOne.buy(playerOne, board.getHeavy());
+                        } else if (choice == 8) {
+                            playerOne.buy(playerOne, board.getCultist());
                         }
                     } else if (playerOption.equals("3")) {
                         System.out.println("End of turn.");
